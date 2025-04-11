@@ -50,7 +50,8 @@ export const cartReducer = (state: CartState = initialState, action: CartActions
   }
 
   if (action.type === "remove-from-cart") {
-    return { ...state }
+    const cart = state.cart.filter((item) => action.payload.id !== item.id)
+    return { ...state, cart }
   }
 
   if (action.type === "decrease-quantity") {
