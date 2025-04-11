@@ -18,7 +18,7 @@ export const initialState: CartState = {
   cart: [],
 }
 
-// const MIN_ITEMS = 1
+const MIN_ITEMS = 1
 const MAX_ITEMS = 5
 
 export const cartReducer = (state: CartState = initialState, action: CartActions) => {
@@ -55,11 +55,29 @@ export const cartReducer = (state: CartState = initialState, action: CartActions
   }
 
   if (action.type === "decrease-quantity") {
-    return { ...state }
+    const cart = state.cart.map((item) => {
+      if (item.id === action.payload.id && item.quantity > MIN_ITEMS) {
+        return {
+          ...item,
+          quantity: item.quantity - 1,
+        }
+      }
+      return item
+    })
+    return { ...state, cart }
   }
 
   if (action.type === "increase-quantity") {
-    return { ...state }
+    const cart = state.cart.map((item) => {
+      if (item.id === action.payload.id && item.quantity < MAX_ITEMS) {
+        return {
+          ...item,
+          quantity: item.quantity + 1,
+        }
+      }
+      return item
+    })
+    return { ...state, cart }
   }
 
   if (action.type === "clear-cart") {
